@@ -44,11 +44,11 @@ job_titles = sorted(job_titles[:3])
 Finalmente, clacule los porcentajes del conteo de habilidades vs el conteo de numero de empleo disponibles y produje el grafico correspondiente.
 ### Resultados
 
-![Resultados de Analysis con conteo](Python_data_proyect\Images\skill_count.png)
+![Resultados de Analysis con conteo](G:\Python_Proyects\Python_data_proyect\Images\skill_count.png)
 
 En principio, el resultado se puede ver en el conteo de manera más precisa debido a las limitaciones que tenia la base de datos sobre la información en españa. Si bien mencioné una parte de la limitación al inicio, al conducir el analisis se demuestran otras limitaciones que impactan el resultado. en concreto, los resultados recopilados en españa contienen, en su mayoria, valores nulos en la lista de habilidades por lo que los porcentajes no son representativos reales de la muestra de sampleo.
 
-![Resultados de Analysis con porcentajes](Python_data_proyect\Images\Skills_percentage.png)
+![Resultados de Analysis con porcentajes](G:\Python_Proyects\Python_data_proyect\Images\Skills_percentage.png)
 
 ### Conclusiones
 
