@@ -1,5 +1,5 @@
 # El Analysis
-## ¿Cuales son las cualidades más cotizadas por los 3 puestos más populares en en el area de data?
+## 1. ¿Cuales son las cualidades más cotizadas por los 3 puestos más populares en en el area de data?
 Para encontrar las habilidades más requeridas en el mercado español, me centré en filtrar primero los 3 puestos más cotizados o requeridos en el mercado laboral. Filtré el nombre de esos 3 puestos más requeridos, y de allí, filtré las 5 habilidades más buscadas para este tipo de roles. Este query, explora los trabajos más populares junto con las habilidades más cotizadas que debería tener para tener más exito en la busqueda de trabajo para este rol en particular. 
 
 Encuentra mi cuadernocon pasos detallados aqui:
@@ -71,4 +71,36 @@ Especialízate según el rol que busques:
 Considera la relevancia de las herramientas de nube y procesamiento big data, dado que son habilidades con creciente demanda.
 
 
-[def]: Python_data_proyect\Images\Skills_percentage.png
+## 2. ¿Cual es la tendencia de las habilidades más demandadas para puestos en data en España?
+
+En este caso, me enfoqué en el puesto de analista de datos que es el que más me interesa. Filtré los resultados por España y desentrañe la lista de habilidades como objetos independientes en la lista para cada rol. (Similar a el primer punto) Luego cree un pivot table donde el indice o el numero de filas fuera el numero de meses en el año que en este caso tiene una representación del año 2023 y las columnas fueran el conteo de cada una de las veces en las que aparecia la habilidad en alguna oferta de trabajo.
+
+```python
+df_spain_pivot = df_spain_skills.pivot_table(index='job_posted_month_no', columns='job_skills', aggfunc='size', fill_value=0)
+df_spain_pivot.loc['Total'] = df_spain_pivot.sum()
+df_spain_pivot = df_spain_pivot[df_spain_pivot.loc['Total'].sort_values(ascending=False).index]
+df_spain_pivot = df_spain_pivot.drop('Total')
+df_spain_pivot
+```
+
+Creé una fila adicional llamada Total, donde se representa la suma de todas las columnas y poder organizar la tabla por este total y finalmente eliminar esta fila una vez la tabla estuviese organizada. Al final hacemos una suma de todos los valores por mes, lo dividimos por el valor en cada "celda" para sacar el porcentaje y cambiamos el formato del més para dejar la tabla lista para graficar.
+
+```python
+db_totals = df_DA_Spain.groupby('job_posted_month_no').size()
+df_spain_percent = df_spain_pivot.div(db_totals/100,axis=0)
+df_spain_percent = df_spain_percent.reset_index()
+df_spain_percent['job_posted_month'] = df_spain_percent['job_posted_month_no'].apply(lambda x: pd.to_datetime(x, format='%m').strftime('%b'))
+df_spain_percent = df_spain_percent.set_index('job_posted_month')
+df_spain_percent = df_spain_percent.drop(columns='job_posted_month_no')
+```
+
+### Resultados
+
+![Resultados de trends con porcentajes](Python_data_proyect\Images\Skill_trend.png)
+
+Despues de limpiar y filtrar por el top 5 más dominantes, este fue el resultado.
+
+### Conclusiones
+
+Como vimos en la primera instancia, de lejos, la habilidad más cotizada es SQL. En españa especificamente parece que tiende al alza mientras que python parece tender a bajar. Tableau parece ser el elemento más estable de toda la grafica, seguido de Excel. Parece ser que python tuvo una reducción entre Julio y diciembre en 2023 y Power BI parece ser un poco ciclico en el año. 
+
